@@ -15,13 +15,13 @@ class App extends Component {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
         position => {
-          self.setState({geolocation: JSON.stringify(position)});
+          self.setState({geolocation: position.coords.latitude + "," + position.coords.longitude});
         },
         error => {
-          self.setState({geolocation: JSON.stringify(error)});
+          self.setState({geolocation: error.code});
         },
         {
-          enableHighAccuracy: false,
+          enableHighAccuracy: true,
           timeout: 5000,
           maximumAge: 0
         }
@@ -31,8 +31,10 @@ class App extends Component {
     if (window.DeviceOrientationEvent) {
       window.addEventListener(
         'deviceorientation',
-        eventData => {
-          self.setState({orientation: JSON.stringify(eventData)});
+        data => {
+          let { gamma, beta, alpha } = data;
+          let orientation = JSON.stringify({ gamma, beta, alpha });
+          self.setState({ orientation });
         },
         false
       );
@@ -40,28 +42,30 @@ class App extends Component {
 
     if (window.DeviceMotionEvent) {
       window.addEventListener('devicemotion', data => {
-        self.setState({motion: JSON.stringify(data)});
+        let { acceleration: a, accelerationIncludingGravity: g, rotationRate:r } = data;
+        let motion = `${a.x} ${a.y} ${a.z} ${g.x} ${g.y} ${g.z} ${r.gamma} ${r.beta} ${r.alpha}`;
+        self.setState({motion});
       });
     }
 
     if ('ondevicelight' in window) {
       window.addEventListener('devicelight', event => {
-        self.setState({devicelight: JSON.stringify(event)});
+        self.setState({devicelight: event.value + " lux"});
       });
     }
 
     if ('onlightlevel' in window) {
       window.addEventListener('lightlevel', event => {
-        self.setState({lightlevel: JSON.stringify(event)});
+        self.setState({lightlevel: event.value});
       });
     }
 
     if ('ondeviceproximity' in window) {
       window.addEventListener('deviceproximity', event => {
-        self.setState({deviceproximity: JSON.stringify(event)});
+        self.setState({deviceproximity: event.value + " cm"});
       });
       window.addEventListener('userproximity', event => {
-        self.setState({userproximity: JSON.stringify(event)});
+        self.setState({userproximity: event.near});
       });
     }
   }
@@ -79,31 +83,31 @@ class App extends Component {
       <div className="App">
         <div>
           <h3>Geolocation</h3>
-          <textarea value={geolocation} rows="3" />
+          {geolocation}
         </div>
         <div>
           <h3>Orientation</h3>
-          <textarea value={orientation} rows="3" />
+          {orientation}
         </div>
         <div>
           <h3>Motion</h3>
-          <textarea value={motion} rows="3" />
+          {motion}
         </div>
         <div>
           <h3>Device Light</h3>
-          <textarea value={devicelight} rows="3" />
+          {devicelight}
         </div>
         <div>
           <h3>Light Level</h3>
-          <textarea value={lightlevel} rows="3" />
+          {lightlevel}
         </div>
         <div>
           <h3>Device Proximity</h3>
-          <textarea value={deviceproximity} rows="3" />
+          {deviceproximity}
         </div>
         <div>
           <h3>User Proximity</h3>
-          <textarea value={userproximity} rows="3" />
+          {userproximity}
         </div>
       </div>
     );
