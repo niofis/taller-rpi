@@ -65,6 +65,15 @@ io.of("/clients").on("connection", function(socket) {
       arr.splice(i, 1);
     clients.set(arr, id);
   });
+  socket.on("get_picture", fn => {
+    let phone = (phones.get(id) || [])[0];
+    if(!phone) {
+      return fn(null);
+    }
+    phone.emit("get_picture", pic => {
+      fn(pic);
+    });
+  });
 });
 
 http.listen(3080, function() {
