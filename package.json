@@ -1,16 +1,20 @@
 {
-  "name": "taller",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "inferno": "^5.0.1",
-    "inferno-component": "^5.0.1",
-    "inferno-scripts": "6.3.0"
-  },
+  "name": "taller-rpi-2018",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "inferno-scripts start",
-    "build": "inferno-scripts build",
-    "test": "inferno-scripts test --env=jsdom",
-    "eject": "inferno-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/niofis/taller-rpi-2018.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/niofis/taller-rpi-2018#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^1.7.4"
   }
 }
