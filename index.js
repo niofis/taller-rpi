@@ -54,6 +54,7 @@ io.of('/phones').on('connection', function(socket) {
     let i = arr.indexOf(socket);
     if (i > -1) arr.splice(i, 1);
     phones.set(arr, id);
+    console.log('disconnected phone with id: ', id);
   });
   socket.on('geolocation', position => {
     if (id) {
@@ -81,8 +82,10 @@ io.of('/clients').on('connection', function(socket) {
     let i = arr.indexOf(socket);
     if (i > -1) arr.splice(i, 1);
     clients.set(arr, id);
+    console.log('disconnected client with id: ', id);
   });
   socket.on("get_picture", fn => {
+    console.log("get_picture");
     let phone = (phones.get(id) || [])[0];
     if(!phone) {
       return fn(null);

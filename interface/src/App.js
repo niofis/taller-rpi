@@ -1,8 +1,8 @@
-import {Component} from "inferno";
-import "./registerServiceWorker";
-import "./App.css";
-import io from "socket.io-client";
-import moment from "moment";
+import {Component} from 'inferno';
+import './registerServiceWorker';
+import './App.css';
+import io from 'socket.io-client';
+import moment from 'moment';
 
 class App extends Component {
   constructor(props) {
@@ -11,10 +11,15 @@ class App extends Component {
       geolocation: {},
       orientation: {}
     };
-    console.log(props)
+
     this.getSensors = this.getSensors.bind(this);
-    this.socket = io("/phones");
-    this.socket.on("identify", (fn) => fn(props.match.params.id));
+    this.getPicture = this.getPicture.bind(this);
+    this.startCamera = this.startCamera.bind(this);
+    this.socket = io('/phones');
+    this.socket.on('identify', fn => fn(props.match.params.id));
+    this.socket.on('get_picture', this.getPicture);
+  }
+  componentDidMount() {
     this.getSensors();
   }
   getSensors() {
@@ -27,7 +32,7 @@ class App extends Component {
           let geolocation = {coords, timestamp};
           let {latitude, longitude, altitude} = coords;
           self.setState({geolocation});
-          this.socket.emit("geolocation", {
+          this.socket.emit('geolocation', {
             latitude,
             longitude,
             altitude,
@@ -47,17 +52,48 @@ class App extends Component {
 
     if (window.DeviceOrientationEvent) {
       window.addEventListener(
-        "deviceorientation",
+        'deviceorientation',
         data => {
           let {alpha, beta, gamma} = data;
           let orientation = {alpha, beta, gamma};
 
           self.setState({orientation});
-          self.socket.emit("orientation", orientation);
+          self.socket.emit('orientation', orientation);
         },
         false
       );
     }
+  }
+  getPicture(callback) {
+    let context = this.canvas.getContext('2d');
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
+    context.drawImage(this.video, 0, 0, this.width, this.height);
+    let data = this.canvas.toDataURL('image/jpeg');
+    callback(data);
+  }
+  async startCamera() {
+    this.video = document.getElementById('video');
+    this.canvas = document.getElementById('canvas');
+    this.width = 640;
+    this.video.srcObject = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: false
+    });
+    this.video.addEventListener(
+      'canplay',
+      ev => {
+        this.height =
+          this.video.videoHeight / (this.video.videoWidth / this.width);
+        this.video.setAttribute('width', this.width);
+        this.video.setAttribute('height', this.height);
+        this.canvas.setAttribute('width', this.width);
+        this.canvas.setAttribute('height', this.height);
+      },
+      false
+    );
+
+    this.video.play();
   }
   render() {
     let {geolocation = {}, orientation = {}} = this.state;
@@ -89,6 +125,14 @@ class App extends Component {
             <br />
           </code>
         </div>
+        {/*
+        <div className="camera">
+          <button type="button" onClick={this.startCamera}>
+            Iniciar Camara
+          </button>
+          <video id="video">Camera not available</video>
+        </div>
+        <canvas id="canvas" />*/}
       </div>
     );
   }
