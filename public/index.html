@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="utf-8">
+  <title>Taller Raspberry Pi 2018</title>
+  <body>
+    <div>
+      <h3>Geolocation</h3>
+      <code>
+        Latitude <span id="latitudeSpan"></span>
+        <br />
+        Longitude <span id="longitudeSpan"></span>
+        <br />
+        Altitude <span id="altitudeSpan"></span>
+        <br />
+        Time <span id="timeSpan"></span>
+      </code>
+    </div>
+    <div>
+      <h3>Orientation</h3>
+      <code>
+        Alpha <span id="alphaSpan"></span>
+        <br />
+        Beta <span id="betaSpan"></span>
+        <br />
+        Gamma <span id="gammaSpan"></span>
+      </code>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io('/phones');
+      const id = window.location.pathname.split('/')[1] || '';
+      socket.on('identify', fn => fn(id));
+
+      const latitudeSpan = document.getElementById('latitudeSpan');
+      const longitudeSpan = document.getElementById('longitudeSpan');
+      const altitudeSpan = document.getElementById('altitudeSpan');
+      const timeSpan = document.getElementById('timeSpan');
+      const alphaSpan = document.getElementById('alphaSpan');
+      const betaSpan = document.getElementById('betaSpan');
+      const gammaSpan = document.getElementById('gammaSpan');
+
+      startSensors();
+
+
+      function startSensors() {
+        if (navigator.geolocation) {
+          navigator.geolocation.watchPosition(
+            position => {
+              let {coords = {}, timestamp = 0} = position;
+              let geolocation = {coords, timestamp};
+              let {latitude, longitude, altitude} = coords;
+              socket.emit('geolocation', {
+                latitude,
+                longitude,
+                altitude,
+                timestamp
+              });
+              latitudeSpan.innerHTML = latitude;
+              longitudeSpan.innerHTML = longitude;
+              altitudeSpan.innerHTML = altitude;
+              timeSpan.innerHTML = (new Date(timestamp)).toString();
+            },
+            error => {
+              console.log(error);
+            },
+            {
+              enableHighAccuracy: true,
+              timeout: 5000,
+              maximumAge: 0
+            }
+          );
+        }
+
+        if (window.DeviceOrientationEvent) {
+          window.addEventListener(
+            'deviceorientation',
+            data => {
+              let {alpha, beta, gamma} = data;
+              let orientation = {alpha, beta, gamma};
+
+              socket.emit('orientation', orientation);
+
+              alphaSpan.innerHTML = alpha.toFixed(2);
+              betaSpan.innerHTML = beta.toFixed(2);
+              gammaSpan.innerHTML = gamma.toFixed(2);
+            },
+            false
+          );
+        }
+      }
+    </script>
+  </body>
+</html>

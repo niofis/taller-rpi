@@ -22,17 +22,8 @@ if (process.env.MODE === 'https') {
   });
 }
 
-app.use(express.static(__dirname + '/interface/build'));
 app.get('/*', (req, res) => {
-  res.sendFile(__dirname + '/interface/build/index.html');
-});
-
-app.get('/geolocation', (req, res) => {
-  res.json(latest.geolocation);
-});
-
-app.get('/orientation', (req, res) => {
-  res.json(latest.orientation);
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 let latest = {};
