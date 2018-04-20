@@ -7,6 +7,8 @@ SERVO = 18
 ENTRADA = 0
 SALIDA = 1
 
+wiringpi.wiringPiSetupGpio()
+
 #configura el pin para el servo
 wiringpi.pinMode(SERVO, wiringpi.GPIO.PWM_OUTPUT)
 wiringpi.pwmSetMode(wiringpi.GPIO.PWM_MODE_MS)
@@ -14,7 +16,6 @@ wiringpi.pwmSetClock(192)
 wiringpi.pwmSetRange(2000)
 
 #configura los pines para el sensor sonico
-wiringpi.wiringPiSetupGpio()
 wiringpi.pinMode(TRIG, SALIDA)
 wiringpi.pinMode(ECHO, ENTRADA)
 
@@ -99,7 +100,7 @@ while not done:
     distancia = leeDistancia()
 
     if distancia < 200:
-        distancia = distancia * 10
+        distancia = distancia * 5
         ufos.append({
             'pos':[
                 int(origen[0] + cos * distancia),
