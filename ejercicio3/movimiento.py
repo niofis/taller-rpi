@@ -18,7 +18,8 @@ while True:
     try:
         if wiringpi.digitalRead(PIR) == 1:
             print "Intrusos!!!"
-            time.sleep(3)
+            while wiringpi.digitalRead(PIR) ==1:
+                pass
         time.sleep(0.2)
     except KeyboardInterrupt:
         sys.exit()
