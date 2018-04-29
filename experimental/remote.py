@@ -46,7 +46,7 @@ def get_picture():
     return latest_picture
 
 
-def initConnection(id=1234, url="https://taller.eccentricdevelopments.com"):
+def initConnection(id=1234, url="https://127.0.0.1:3443"):
     global client_id
     global io
     client_id = id
