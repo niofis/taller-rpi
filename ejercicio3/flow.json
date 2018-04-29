@@ -1,0 +1,647 @@
+[
+    {
+        "id": "d1bdbaf0.f2a8a",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "775f7b5c.60c8bc",
+        "type": "rpi-dht22",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "topic": "rpi-dht22",
+        "dht": 22,
+        "pintype": "0",
+        "pin": "23",
+        "x": 360,
+        "y": 320,
+        "wires": [
+            [
+                "cd4787ce.3ec8b8",
+                "bef2f13b.2781a",
+                "5a6d9e0.f7070e4"
+            ]
+        ]
+    },
+    {
+        "id": "32335b9e.f8664c",
+        "type": "inject",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 130,
+        "y": 320,
+        "wires": [
+            [
+                "775f7b5c.60c8bc"
+            ]
+        ]
+    },
+    {
+        "id": "cd4787ce.3ec8b8",
+        "type": "ui_gauge",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "group": "533b6001.947ac8",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Gauge",
+        "label": "C",
+        "format": "{{value}}",
+        "min": "20",
+        "max": "40",
+        "colors": [
+            "#00B500",
+            "#E6E600",
+            "#CA3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 600,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "bef2f13b.2781a",
+        "type": "debug",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 610,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "c64adcfa.4aff2",
+        "type": "ui_gauge",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "Humedad",
+        "group": "533b6001.947ac8",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Humedad",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00B500",
+            "#E6E600",
+            "#CA3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 610,
+        "y": 420,
+        "wires": [],
+        "inputLabels": [
+            "msg.humidity"
+        ]
+    },
+    {
+        "id": "5a6d9e0.f7070e4",
+        "type": "change",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "humidity",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 480,
+        "wires": [
+            [
+                "c64adcfa.4aff2",
+                "254340c1.6ee4e8"
+            ]
+        ]
+    },
+    {
+        "id": "254340c1.6ee4e8",
+        "type": "ui_chart",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "group": "533b6001.947ac8",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1F77B4",
+            "#AEC7E8",
+            "#FF7F0E",
+            "#2CA02C",
+            "#98DF8A",
+            "#D62728",
+            "#FF9896",
+            "#9467BD",
+            "#C5B0D5"
+        ],
+        "useOldStyle": false,
+        "x": 710,
+        "y": 520,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "c1b91cb7.0d90a",
+        "type": "ui_text",
+        "z": "d1bdbaf0.f2a8a",
+        "group": "d9c89c99.9bc628",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Movimiento",
+        "format": "{{msg.payload ? 'Intruso!' : 'Vacio'}}",
+        "layout": "row-spread",
+        "x": 670,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "e823f3.3b2efc1",
+        "type": "rpi-gpio in",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "pin": "26",
+        "intype": "tri",
+        "debounce": "25",
+        "read": false,
+        "x": 250,
+        "y": 100,
+        "wires": [
+            [
+                "c1b91cb7.0d90a",
+                "30c319a1.222a46",
+                "e5ff2aec.9aa39"
+            ]
+        ]
+    },
+    {
+        "id": "2c9cf7ca.f90c",
+        "type": "rpi-gpio out",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "pin": "18",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 660,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "f7952945.05911",
+        "type": "ui_switch",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "Luz",
+        "label": "Luz",
+        "group": "d9c89c99.9bc628",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "num",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "officon": "",
+        "offcolor": "",
+        "x": 270,
+        "y": 180,
+        "wires": [
+            [
+                "30c319a1.222a46"
+            ]
+        ]
+    },
+    {
+        "id": "30c319a1.222a46",
+        "type": "function",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "Encendido",
+        "func": "var count = context.get('count') || 0;\nif(msg.payload === 1) {\n    count++;\n} else {\n    count--;\n}\ncontext.set('count', count);\nmsg.payload = count > 0 ? 1 : 0;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 470,
+        "y": 160,
+        "wires": [
+            [
+                "2c9cf7ca.f90c"
+            ]
+        ]
+    },
+    {
+        "id": "e5ff2aec.9aa39",
+        "type": "ifttt out",
+        "z": "d1bdbaf0.f2a8a",
+        "eventName": "movement_detected",
+        "key": "a6e935c0.c6afa8",
+        "x": 660,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "533b6001.947ac8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Sensores",
+        "tab": "b98b4e83.7a96b",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "d9c89c99.9bc628",
+        "type": "ui_group",
+        "z": "",
+        "name": "Controles",
+        "tab": "b98b4e83.7a96b",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "a6e935c0.c6afa8",
+        "type": "ifttt-key",
+        "z": ""
+    },
+    {
+        "id": "b98b4e83.7a96b",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard"
+    }
+][
+    {
+        "id": "d1bdbaf0.f2a8a",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "775f7b5c.60c8bc",
+        "type": "rpi-dht22",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "topic": "rpi-dht22",
+        "dht": 22,
+        "pintype": "0",
+        "pin": "23",
+        "x": 360,
+        "y": 320,
+        "wires": [
+            [
+                "cd4787ce.3ec8b8",
+                "bef2f13b.2781a",
+                "5a6d9e0.f7070e4"
+            ]
+        ]
+    },
+    {
+        "id": "32335b9e.f8664c",
+        "type": "inject",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 130,
+        "y": 320,
+        "wires": [
+            [
+                "775f7b5c.60c8bc"
+            ]
+        ]
+    },
+    {
+        "id": "cd4787ce.3ec8b8",
+        "type": "ui_gauge",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "group": "533b6001.947ac8",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Gauge",
+        "label": "C",
+        "format": "{{value}}",
+        "min": "20",
+        "max": "40",
+        "colors": [
+            "#00B500",
+            "#E6E600",
+            "#CA3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 600,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "bef2f13b.2781a",
+        "type": "debug",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 610,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "c64adcfa.4aff2",
+        "type": "ui_gauge",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "Humedad",
+        "group": "533b6001.947ac8",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Humedad",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00B500",
+            "#E6E600",
+            "#CA3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 610,
+        "y": 420,
+        "wires": [],
+        "inputLabels": [
+            "msg.humidity"
+        ]
+    },
+    {
+        "id": "5a6d9e0.f7070e4",
+        "type": "change",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "humidity",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 480,
+        "wires": [
+            [
+                "c64adcfa.4aff2",
+                "254340c1.6ee4e8"
+            ]
+        ]
+    },
+    {
+        "id": "254340c1.6ee4e8",
+        "type": "ui_chart",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "group": "533b6001.947ac8",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1F77B4",
+            "#AEC7E8",
+            "#FF7F0E",
+            "#2CA02C",
+            "#98DF8A",
+            "#D62728",
+            "#FF9896",
+            "#9467BD",
+            "#C5B0D5"
+        ],
+        "useOldStyle": false,
+        "x": 710,
+        "y": 520,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "c1b91cb7.0d90a",
+        "type": "ui_text",
+        "z": "d1bdbaf0.f2a8a",
+        "group": "d9c89c99.9bc628",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Movimiento",
+        "format": "{{msg.payload ? 'Intruso!' : 'Vacio'}}",
+        "layout": "row-spread",
+        "x": 670,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "e823f3.3b2efc1",
+        "type": "rpi-gpio in",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "pin": "26",
+        "intype": "tri",
+        "debounce": "25",
+        "read": false,
+        "x": 250,
+        "y": 100,
+        "wires": [
+            [
+                "c1b91cb7.0d90a",
+                "30c319a1.222a46",
+                "e5ff2aec.9aa39"
+            ]
+        ]
+    },
+    {
+        "id": "2c9cf7ca.f90c",
+        "type": "rpi-gpio out",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "",
+        "pin": "18",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 660,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "f7952945.05911",
+        "type": "ui_switch",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "Luz",
+        "label": "Luz",
+        "group": "d9c89c99.9bc628",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "num",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "officon": "",
+        "offcolor": "",
+        "x": 270,
+        "y": 180,
+        "wires": [
+            [
+                "30c319a1.222a46"
+            ]
+        ]
+    },
+    {
+        "id": "30c319a1.222a46",
+        "type": "function",
+        "z": "d1bdbaf0.f2a8a",
+        "name": "Encendido",
+        "func": "var count = context.get('count') || 0;\nif(msg.payload === 1) {\n    count++;\n} else {\n    count--;\n}\ncontext.set('count', count);\nmsg.payload = count > 0 ? 1 : 0;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 470,
+        "y": 160,
+        "wires": [
+            [
+                "2c9cf7ca.f90c"
+            ]
+        ]
+    },
+    {
+        "id": "e5ff2aec.9aa39",
+        "type": "ifttt out",
+        "z": "d1bdbaf0.f2a8a",
+        "eventName": "movement_detected",
+        "key": "a6e935c0.c6afa8",
+        "x": 660,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "533b6001.947ac8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Sensores",
+        "tab": "b98b4e83.7a96b",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "d9c89c99.9bc628",
+        "type": "ui_group",
+        "z": "",
+        "name": "Controles",
+        "tab": "b98b4e83.7a96b",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "a6e935c0.c6afa8",
+        "type": "ifttt-key",
+        "z": ""
+    },
+    {
+        "id": "b98b4e83.7a96b",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard"
+    }
+]
