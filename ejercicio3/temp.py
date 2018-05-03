@@ -1,7 +1,7 @@
 #de frente
-#pin 1 -> 5v
+#pin 1 -> 3.3v
 #pin 2 -> GPIO23(pin 16)
-#pin 2 -> 10Kohm -> 5v
+#pin 2 -> 10Kohm -> 3.3v
 #pin 3 -> nada
 #pin 4 -> GND
 
