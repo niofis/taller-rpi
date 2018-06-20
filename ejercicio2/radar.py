@@ -4,42 +4,42 @@ TRIG = 23
 ECHO = 24
 SERVO = 18
 
-ENTRADA = 0
-SALIDA = 1
+INPUT = 0
+OUTPUT = 1
 
 wiringpi.wiringPiSetupGpio()
 
-#configura el pin para el servo
+#servo cofiguration
 wiringpi.pinMode(SERVO, wiringpi.GPIO.PWM_OUTPUT)
 wiringpi.pwmSetMode(wiringpi.GPIO.PWM_MODE_MS)
 wiringpi.pwmSetClock(192)
 wiringpi.pwmSetRange(2000)
 
-#configura los pines para el sensor sonico
-wiringpi.pinMode(TRIG, SALIDA)
-wiringpi.pinMode(ECHO, ENTRADA)
+#sonic sensor configuration
+wiringpi.pinMode(TRIG, OUTPUT)
+wiringpi.pinMode(ECHO, INPUT)
 
-#configura pygame
+#pygame configuration
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 pygame.init()
 
-ANCHO = 600
-ALTO = 600
-size = [ANCHO, ALTO]
-origen = [ANCHO /2, ALTO]
-radio = ANCHO / 4
+WIDTH = 600
+HEIGHT = 600
+size = [WIDTH, HEIGHT]
+origin = [WIDTH /2, HEIGHT]
+radius = WIDTH / 4
 
-VERDE1 = (0, 64, 0)
-VERDE2 = (0, 128, 0)
+GREEN1 = (0, 64, 0)
+GREEN2 = (0, 128, 0)
 
-pantalla = pygame.display.set_mode(size)#, pygame.FULLSCREEN)
+screen = pygame.display.set_mode(size)#, pygame.FULLSCREEN)
 
 pygame.display.set_caption('Pi Radar')
 
 
-def leeDistancia():
-    inicio = 0
-    fin = 0
+def readDistance():
+    startTime = 0
+    endTime = 0
     wiringpi.digitalWrite(TRIG, 0)
     time.sleep(2*10**-6)
     wiringpi.digitalWrite(TRIG, 1)
@@ -47,25 +47,25 @@ def leeDistancia():
     wiringpi.digitalWrite(TRIG, 0)
 
     while wiringpi.digitalRead(ECHO) == 0:
-        inicio = time.time()
+        startTime = time.time()
     while wiringpi.digitalRead(ECHO) == 1:
-        fin = time.time()
+        endTime = time.time()
 
-    duracion = (fin - inicio) * 10**6
-    distancia = duracion / 58
-    return distancia
+    duration = (endTime - startTime) * 10**6
+    distance = duration / 58
+    return distance
 
 done = False
 clock = pygame.time.Clock()
 
-grados = 0
-delta_grados = 2
+degrees = 0
+delta_degrees = 2
 ufos = []
 
-#ciclo principal
+#main loop
 while not done:
-    #limite de 30 FPS
-    # clock.tick(30)
+    #30 FPS limit
+    #clock.tick(30)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -74,43 +74,43 @@ while not done:
             if event.key == pygame.K_ESCAPE:
                 done = True
 
-    #dibuja radar
-    pantalla.fill(VERDE1)
-    pygame.draw.line(pantalla, VERDE2, origen, [0, 0], 5)
-    pygame.draw.line(pantalla, VERDE2, origen, [ANCHO, 0], 5)
+    #draw radar
+    screen.fill(GREEN1)
+    pygame.draw.line(screen, GREEN2, origin, [0, 0], 5)
+    pygame.draw.line(screen, GREEN2, origin, [WIDTH, 0], 5)
 
     for i in range(1,5):
-        pygame.draw.circle(pantalla, VERDE2, origen, radio * i, 5)
+        pygame.draw.circle(screen, GREEN2, origin, radius * i, 5)
 
-    #dibuja linea de seguimiento
-    cos = math.cos(grados*math.pi/180)
-    sen = math.sin(grados*math.pi/180)
-    pygame.draw.line(pantalla, VERDE2, origen,
-            [origen[0] + cos * ANCHO, origen[1] - sen * ALTO], 5);
+    #draw radar line
+    cos = math.cos(degrees*math.pi/180)
+    sen = math.sin(degrees*math.pi/180)
+    pygame.draw.line(screen, GREEN2, origin,
+            [origin[0] + cos * WIDTH, origin[1] - sen * HEIGHT], 5);
 
     for ufo in ufos:
-        pygame.draw.circle(pantalla, VERDE2, ufo['pos'], ufo['radio'])
-        ufo['radio'] = ufo['radio'] - 1
-        if ufo['radio'] == 0:
+        pygame.draw.circle(screen, GREEN2, ufo['pos'], ufo['radius'])
+        ufo['radius'] = ufo['radius'] - 1
+        if ufo['radius'] == 0:
             ufos.remove(ufo)
 
-    wiringpi.pwmWrite(SERVO, grados + 50)
+    wiringpi.pwmWrite(SERVO, degrees + 50)
     wiringpi.delay(10)
 
-    distancia = leeDistancia()
+    distance = readDistance()
 
-    if distancia < 200:
-        distancia = distancia * 5
+    if distance < 200:
+        distance = distance * 5
         ufos.append({
             'pos':[
-                int(origen[0] + cos * distancia),
-                int(origen[1] - sen * distancia)],
-            'radio': 50 })
+                int(origin[0] + cos * distance),
+                int(origin[1] - sen * distance)],
+            'radius': 50 })
 
-    grados = grados + delta_grados
+    degrees = degrees + delta_degrees
 
-    if grados <= 0 or grados >= 180:
-        delta_grados = -delta_grados
+    if degrees <= 0 or degrees >= 180:
+        delta_degrees = -delta_degrees
 
     pygame.display.flip()
 
