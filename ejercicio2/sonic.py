@@ -1,6 +1,6 @@
 #Sensor HC-SR04
 #Docs: http://www.micropik.com/PDF/HCSR04.pdf
-#Conexion:
+#Connection:
 #GND -> GND (Pin 6)
 #ECHO -> 1Kohm -> GPIO 24 (Pin 18) -> 2Kohm -> GND
 #TRIG -> GPIO -> 23 (Pin 16)
@@ -14,8 +14,8 @@ TRIG = 23
 ECHO = 24
 
 wiringpi.wiringPiSetupGpio()
-wiringpi.pinMode(TRIG, 1) #salida
-wiringpi.pinMode(ECHO, 0) #entrada
+wiringpi.pinMode(TRIG, 1) #output
+wiringpi.pinMode(ECHO, 0) #input
 
 while True:
     try:
@@ -26,15 +26,15 @@ while True:
         wiringpi.digitalWrite(TRIG, 0)
 
         while wiringpi.digitalRead(ECHO) == 0:
-            inicio = time.time()
+            startTime = time.time()
 
         while wiringpi.digitalRead(ECHO) == 1:
-            fin = time.time()
+            endTime = time.time()
 
-        duracion = (fin - inicio) * 10**6
-        distancia = duracion / 58
+        duration = (endTime - startTime) * 10**6
+        distance = duration / 58
 
-        print "Distancia:", round(distancia, 4), "cm"
+        print "Distance:", round(distance, 4), "cm"
         time.sleep(0.2)
     except KeyboardInterrupt:
         sys.exit()
