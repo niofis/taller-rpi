@@ -1,17 +1,17 @@
 import wiringpi
 
-#inicializa la libreria WiringPi
+#initialize WiringPi library
 wiringpi.wiringPiSetupGpio()
 
 PIN = 18
 
-#configura el PIN para funcionar como PWM
+#setup PIN to work as pwm output
 wiringpi.pinMode(PIN, wiringpi.GPIO.PWM_OUTPUT)
 
-#PWM en modo de milisegundos
+#set PWM mode to milliseconds
 wiringpi.pwmSetMode(wiringpi.GPIO.PWM_MODE_MS)
 
-#parametros para configurar una frecuencia de 50Hz
+#50Hz configuration
 wiringpi.pwmSetClock(192)
 wiringpi.pwmSetRange(2000)
 
