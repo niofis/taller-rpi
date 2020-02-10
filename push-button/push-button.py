@@ -1,22 +1,21 @@
-# Leer el estado de un boton
-# Configuración:
-# Tierra PIN 6
-# Boton PIN 17
+# Push button
+# Tierra -> GND (PIN 6)
+# Boton -> GPIO 23 (PIN 16)
 
-import wiringpi, random, time
+import time
+import sys
+import board
+import digitalio
 
-wiringpi.wiringPiSetupGpio()
-
-ENTRADA = 0
-SALIDA = 1
-PULLUP = 2
-BOTON = 17
-
-wiringpi.pinMode(BOTON, ENTRADA)
-wiringpi.pullUpDnControl(BOTON, PULLUP)
+button = digitalio.DigitalInOut(board.D23)
+button.direction = digitalio.Direction.INPUT
+button.pull = digitalio.Pull.UP
 
 while True:
-    if wiringpi.digitalRead(BOTON) == 0:
-        print("CLICK!");
-        while wiringpi.digitalRead(BOTON) == 0:
-            wiringpi.delay(100);
+    try:
+        if button.value == True:
+            print("Click!")
+            while button.value == True:
+                time.sleep(0.2)
+    except KeyboardInterrupt:
+        sys.exit()
