@@ -16,5 +16,8 @@ client.on_message = on_message
 
 client.connect("192.168.50.105", 1883, 60)
 
-client.loop_forever()
+try:
+    client.loop_forever()
+except KeyboardInterrupt:
+    sys.exit()
 
