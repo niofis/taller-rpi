@@ -1,3 +1,4 @@
+import sys
 import serial
 import json
 import random
@@ -11,11 +12,8 @@ while True:
         try:
             datos = json.loads(linea)
             print("luz = " + str(datos["luz"]))
-            enc = "off"
-            if random.randrange(2) == 1:
-                enc = "on"
-            pkt = json.dumps({"led": enc});
-            arduino.write((pkt + "\n").encode("UTF-8"))
+        except KeyboardInterrupt:
+            sys.exit()
         except ValueError:
             pass
         except Exception as e:

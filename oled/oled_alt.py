@@ -27,7 +27,7 @@ font = ImageFont.load_default()
 while True:
     try:
         draw.rectangle((0,0,width,height), outline=0, fill=0)
-        draw.text((0,0), "OLED!",  font=font, fill=1)
+        draw.text((0,0), "OLED! á",  font=font, fill=1)
         draw.line((0,0, 127, 63), fill=1)
         disp.image(image)
         disp.display()
