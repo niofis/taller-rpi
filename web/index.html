@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="paho-mqtt.js"></script>
+  </head>
+  <body>
+    MQTT cliente web
+    <textarea id="log" style="width:100%" rows=15></textarea>
+    <script>
+      const log = document.getElementById("log")
+      log.append = function (txt) {
+        this.innerHTML += txt + '\n';
+      }
+      var client = new Paho.MQTT.Client('192.168.50.105', 1884, 'browser');
+
+      client.onConnectionLost = onConnectionLost;
+      client.onMessageArrived = onMessageArrived;
+
+      client.connect({ onSuccess: onConnect });
+
+      function onConnect() {
+        log.append("conectado!");
+        client.subscribe('sensor/random');
+        /*
+                message = new Paho.MQTT.Message('Hello');
+                message.destinationName = 'World';
+                client.send(message);
+         */
+      }
+
+      function onConnectionLost(responseObject) {
+        if (responseObject.errorCode !== 0) {
+          log.append('Desconectado:' + responseObject.errorMessage);
+        }
+      }
+
+      function onMessageArrived(message) {
+        log.append(`${message.topic} ${message.payloadString}`);
+      }
+    </script>
+  </body>
+</html>
