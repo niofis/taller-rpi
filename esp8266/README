@@ -16,3 +16,16 @@ IO0  ->  GND
 GND  ->  GND
 
 
+Espruino install:
+
+Download binary from:
+http://www.espruino.com/Download
+
+Locate esptool.py, it usually is in:
+/home/pi/.arduino15/packages/esp8266/hardware/esp8266/2.6.3/tools/esptool
+
+Prepare the esp8266 for flashing
+
+Run the flash command:
+
+python esptool.py --port /dev/ttyUSB0 --baud 115200   write_flash --flash_freq 40m --flash_mode qio --flash_size 512KB   0x0000 ~/Downloads/espruino_2v04_esp8266_combined_512.bin
