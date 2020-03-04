@@ -29,3 +29,6 @@ Prepare the esp8266 for flashing
 Run the flash command:
 
 python esptool.py --port /dev/ttyUSB0 --baud 115200   write_flash --flash_freq 40m --flash_mode qio --flash_size 512KB   0x0000 ~/Downloads/espruino_2v04_esp8266_combined_512.bin
+
+Configuration instructions:
+https://www.espruino.com/EspruinoESP8266
