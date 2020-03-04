@@ -1,0 +1,18 @@
+This diagram works for the other ESP8266-01
+https://create.arduino.cc/projecthub/pratikdesai/how-to-program-esp8266-esp-01-module-with-arduino-uno-598166
+
+Notes:
+* Reset pin is not needed to be grounded
+* EN or CHPD need to be set to 3.3V
+* The most reliable way to start programming is to disconect it from power completly and connect it again before uploading
+
+Connections to an arduino for programming:
+ESP  ->  Arduino
+3.3V ->  3.3V
+RX   ->  RX
+TX   ->  Tx
+EN   ->  3.3V
+IO0  ->  GND
+GND  ->  GND
+
+
